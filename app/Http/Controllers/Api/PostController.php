@@ -62,16 +62,22 @@ class PostController extends Controller
     }
 
     public function show($id){
-        $posts = Post::with('user','category','image')->all();
-        $postIds = [];
-        foreach ($posts as $post) {
-            array_push($postIds,$post->id);
-        }
-        if (in_array($id,$postIds)) {
+        // $posts = Post::all();
+        // $postIds = [];
+        // foreach ($posts as $post) {
+        //     array_push($postIds,$post->id);
+        // }
+        // if (in_array($id,$postIds)) {
+        //     $post = Post::findOrFail($id);
+        //     return ResponseHelper::success(new PostDetailResource($post));
+        // }
+        // return ResponseHelper::fail('Post Not Found');
+        try {
             $post = Post::findOrFail($id);
             return ResponseHelper::success(new PostDetailResource($post));
+        } catch (\Throwable $th) {
+            return ResponseHelper::fail('Post Not Found');
         }
-        return ResponseHelper::fail('Post Not Found');
 
     }
 }
